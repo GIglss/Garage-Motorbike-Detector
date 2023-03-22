@@ -45,6 +45,9 @@ RUN apt-get update --fix-missing && apt-get install -y wget bzip2 ca-certificate
     libglib2.0-0 libxext6 libsm6 libxrender1 \
     git mercurial subversion
 
+RUN update-ca-certificates
+
+ENV SSL_CERT_DIR=/etc/ssl/certs
 
 ENV PATH="/usr/local/bin:$PATH"
 
@@ -212,15 +215,15 @@ RUN protoc object_detection/protos/*.proto --python_out=.
 # COCO API
 WORKDIR home
 RUN git clone https://github.com/cocodataset/cocoapi.git
-WORKDIR home/cocoapi/PythonAPI
-COPY home/cocoapi/PythonAPI/pycocotools home/TensorFlow/models/research/
+# WORKDIR home/cocoapi/PythonAPI
+# COPY home/cocoapi/PythonAPI/pycocotools home/TensorFlow/models/research/
 
 
 
 
 # Object Detection API
 WORKDIR home/TensorFlow/models/research
-COPY home/TensorFlow/models/research/object_detection/packages/tf2/setup.py .
+# COPY home/TensorFlow/models/research/object_detection/packages/tf2/setup.py .
 RUN python -m pip install --use-feature=2020-resolver .
 
 

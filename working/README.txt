@@ -4,7 +4,7 @@ https://docs.docker.com/engine/install/debian/#prerequisites
 
 https://www.youtube.com/watch?v=NPXBRX7N3ec&feature=youtu.be
 
-go to repo tensorflow/examples/lite
+go to repo tensorflow/examples/lite at: https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection
 
 RUN
 

@@ -9,6 +9,7 @@ go to repo tensorflow/examples/lite
 RUN
 
 Puedes ejecutar el ejemplo de prueba:
+Con el python venv activado
 Desde la ruta: "/garage_detector/examples/lite/examples/object_detection/raspberry_pi"
 Ejecutar:
  "$ python3 detect.py --model efficientdet_lite0.tflite"

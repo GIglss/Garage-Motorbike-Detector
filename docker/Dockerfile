@@ -45,9 +45,11 @@ RUN apt-get update -qq \
     libtesseract-dev \
     libpoppler-cpp-dev \
     libusb-1.0 \
-    procps
+    procps \
+    rpi.gpio
 
 # procps para poder usar comando ps dentro del contenedor
+# rpi.gpio para usar GPIO de raspberry pi
 
 COPY /detector /home/detector
 

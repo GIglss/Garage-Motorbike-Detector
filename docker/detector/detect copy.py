@@ -15,6 +15,7 @@
 import argparse
 import sys
 import time
+import pandas as pd
 
 import cv2
 from tflite_support.task import core
@@ -64,6 +65,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
 
   # Continuously capture images from the camera and run inference
   while cap.isOpened():
+    
     success, image = cap.read()
     if not success:
       sys.exit(
@@ -81,28 +83,59 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
 
     # Run object detection estimation using the model.
     detection_result = detector.detect(input_tensor)
-    print(detection_result)
+    
+    
+    ########    
+    print('------------ start capture ----------')
+    categories_frame = []
+    index_frame = []
+    score_frame = []
+    df_frame_detection = pd.DataFrame()
+    
+    for detection in detection_result.detections:
+      category = detection.categories[0]
+      #categories_frame.append(category.category_name)
+      #index_frame.append(category.index)
+      #score_frame.append(category.score)
+      df_frame_detection = df_frame_detection.append({
+          'id': category.index,
+          'name': category.category_name,
+          'score': category.score,
+      }, ignore_index=True)
+      
+      print(df_frame_detection)
+      
+      if 0 in df_frame_detection['id'].values[:3]:
+        lista_score = df_frame_detection[df_frame_detection['id'] == 0]['score']
+        if lista_score.max() > 0.6:
+          print('YESSSSSSS')
+      
+      print('___end detection_n____')
+    print('------------ end capture ----------')
+    ########
+    
+    
 
-    # Draw keypoints and edges on input image
-    image = utils.visualize(image, detection_result)
+    # # Draw keypoints and edges on input image
+    # image = utils.visualize(image, detection_result)
 
-    # Calculate the FPS
-    if counter % fps_avg_frame_count == 0:
-      end_time = time.time()
-      fps = fps_avg_frame_count / (end_time - start_time)
-      start_time = time.time()
+    # # Calculate the FPS
+    # if counter % fps_avg_frame_count == 0:
+    #   end_time = time.time()
+    #   fps = fps_avg_frame_count / (end_time - start_time)
+    #   start_time = time.time()
 
-    # Show the FPS
-    fps_text = 'FPS = {:.1f}'.format(fps)
-    text_location = (left_margin, row_size)
-    cv2.putText(image, fps_text, text_location, cv2.FONT_HERSHEY_PLAIN,
-                font_size, text_color, font_thickness)
+    ## Show the FPS
+    # fps_text = 'FPS = {:.1f}'.format(fps)
+    # text_location = (left_margin, row_size)
+    # cv2.putText(image, fps_text, text_location, cv2.FONT_HERSHEY_PLAIN,
+    #             font_size, text_color, font_thickness)
 
     # Stop the program if the ESC key is pressed.
     if cv2.waitKey(1) == 27:
       break
-    cv2.imshow('object_detector', image)
-
+    # cv2.imshow('object_detector', image)
+    
   cap.release()
   cv2.destroyAllWindows()
 

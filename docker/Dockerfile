@@ -44,7 +44,10 @@ RUN apt-get update -qq \
     tesseract-ocr \
     libtesseract-dev \
     libpoppler-cpp-dev \
-    libusb-1.0
+    libusb-1.0 \
+    procps
+
+# procps para poder usar comando ps dentro del contenedor
 
 COPY /detector /home/detector
 

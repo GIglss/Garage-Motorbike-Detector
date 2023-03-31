@@ -16,6 +16,7 @@ import argparse
 import sys
 import time
 import pandas as pd
+import RPi.GPIO as GPIO
 
 import cv2
 from tflite_support.task import core
@@ -109,6 +110,14 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         lista_score = df_frame_detection[df_frame_detection['id'] == 0]['score']
         if lista_score.max() > 0.6:
           print('YESSSSSSS')
+          GPIO.setmode(GPIO.BOARD)
+          # open pin 7 , wait 1 secod , close, then clean GPIO
+          GPIO.setup(7, GPIO.OUT)
+          GPIO.output(7,True)
+          time.sleep(1)
+          GPIO.output(7,False)
+          time.sleep(1)
+          GPIO.cleanup()
       
       print('___end detection_n____')
     print('------------ end capture ----------')
@@ -175,7 +184,7 @@ def main():
       required=False,
       default=False)
   args = parser.parse_args()
-
+  
   run(args.model, int(args.cameraId), args.frameWidth, args.frameHeight,
       int(args.numThreads), bool(args.enableEdgeTPU))
 

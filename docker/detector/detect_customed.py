@@ -118,6 +118,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           GPIO.output(7,False)
           time.sleep(1)
           GPIO.cleanup()
+          time.sleep(10)
       
       print('___end detection_n____')
     print('------------ end capture ----------')

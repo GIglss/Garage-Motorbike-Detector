@@ -1,13 +1,14 @@
+version: "3"
 services:
-  bike_detector_tflite_s:
-    image: bike_detector_tflite
+  bike_detector_app:
+    image: bike_detector_tflite:latest
     container_name: bike_detector
     build:
       context: .
       dockerfile: Dockerfile
-    network_mode: host
-    restart: always
     volumes:
       - ./detector:/home/detector/
     devices:
       - '/dev/video0:/dev/video0'
+      - '/dev/gpiomem:/dev/gpiomem'
+    tty: true

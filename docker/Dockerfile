@@ -64,8 +64,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN python3 -m pip install pip --upgrade
 RUN python3 -m pip install -r requirements.txt
 
-
-
+CMD ["python3", "./detect_customed.py"]
 
 ################
 

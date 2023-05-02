@@ -13,3 +13,7 @@ Con el python venv activado
 Desde la ruta: "/garage_detector/examples/lite/examples/object_detection/raspberry_pi"
 Ejecutar:
  "$ python3 detect.py --model efficientdet_lite0.tflite"
+ 
+ 
+El relé debe estar alimentado por 3Vdc para que no se quede el relé activado en los pulsos bajos
+

@@ -104,23 +104,32 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           'score': category.score,
       }, ignore_index=True)
       
+    if df_frame_detection.shape[0] > 0:
       print(df_frame_detection)
-      
-      if 0 in df_frame_detection['id'].values[:3]:
-        lista_score = df_frame_detection[df_frame_detection['id'] == 0]['score']
+      id_to_detect = 3 # motorcycle
+      if id_to_detect in df_frame_detection['id'].values[:3]:
+        lista_score = df_frame_detection[df_frame_detection['id'] == id_to_detect]['score']
         if lista_score.max() > 0.6:
           print('YESSSSSSS')
+          
+          cap.release()
+          
           GPIO.setmode(GPIO.BOARD)
-          # open pin 7 , wait 1 secod , close, then clean GPIO
-          GPIO.setup(7, GPIO.OUT)
-          GPIO.output(7,True)
+          # open pin 5 , wait 1 second , close, then clean GPIO
+          GPIO.setup(5, GPIO.OUT)
+          GPIO.output(5,True)
           time.sleep(1)
-          GPIO.output(7,False)
+          GPIO.output(5,False)
           time.sleep(1)
           GPIO.cleanup()
-          time.sleep(10)
-      
-      print('___end detection_n____')
+          time.sleep(30)
+          
+          
+          # Start capturing video input from the camera
+          cap = cv2.VideoCapture(camera_id)
+          cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+          cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+
     print('------------ end capture ----------')
     ########
     
